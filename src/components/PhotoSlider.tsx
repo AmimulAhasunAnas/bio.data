@@ -31,6 +31,10 @@ export default function PhotoSlider({ images, interval = 5000 }: PhotoSliderProp
         <motion.img
           key={index}
           src={images[index]}
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            target.src = `https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=1200&t=${index}`;
+          }}
           initial={{ opacity: 0, scale: 1.1 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.95 }}
