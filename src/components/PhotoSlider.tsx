@@ -28,20 +28,32 @@ export default function PhotoSlider({ images, interval = 5000 }: PhotoSliderProp
   return (
     <div id="photo-slider" className="relative w-full aspect-video md:aspect-21/9 overflow-hidden rounded-xl border border-white/10 stark-glow group">
       <AnimatePresence mode="wait">
-        <motion.img
-          key={index}
-          src={images[index]}
-          onError={(e) => {
-            const target = e.target as HTMLImageElement;
-            target.src = `https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=1200&t=${index}`;
-          }}
-          initial={{ opacity: 0, scale: 1.1 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.95 }}
-          transition={{ duration: 0.8, ease: "easeInOut" }}
-          className="absolute inset-0 w-full h-full object-cover"
-          referrerPolicy="no-referrer"
-        />
+        <div key={index} className="absolute inset-0 overflow-hidden">
+          {/* Blurred background to fill empty space */}
+          <motion.img
+            src={images[index]}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.3 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.8 }}
+            className="absolute inset-0 w-full h-full object-cover blur-2xl scale-110"
+            referrerPolicy="no-referrer"
+          />
+          {/* Main contained image */}
+          <motion.img
+            src={images[index]}
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.src = `https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=1200&t=${index}`;
+            }}
+            initial={{ opacity: 0, scale: 1.05 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.8, ease: "easeInOut" }}
+            className="relative z-10 w-full h-full object-contain"
+            referrerPolicy="no-referrer"
+          />
+        </div>
       </AnimatePresence>
 
       <div className="absolute inset-0 bg-gradient-to-t from-mcu-dark/80 via-transparent to-transparent" />
